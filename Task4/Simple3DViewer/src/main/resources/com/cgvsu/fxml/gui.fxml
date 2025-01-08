@@ -15,7 +15,7 @@
                 <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="F"/>
             </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" onAction="#onOpenModelMenuItemClick" text="Save">
+            <MenuItem mnemonicParsing="false" onAction="#onSaveModelMenuItemClick" text="Save as...">
                 <accelerator>
                     <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="S"/>
                 </accelerator>

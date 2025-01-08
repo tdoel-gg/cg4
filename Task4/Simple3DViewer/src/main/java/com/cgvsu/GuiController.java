@@ -1,5 +1,6 @@
 package com.cgvsu;
 
+import com.cgvsu.obj_writer.ObjWriter;
 import com.cgvsu.render_engine.RenderEngine;
 import javafx.fxml.FXML;
 import javafx.animation.Animation;
@@ -7,6 +8,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
@@ -88,6 +90,30 @@ public class GuiController {
             // todo: обработка ошибок
         } catch (IOException exception) {
 
+        }
+    }
+
+    @FXML
+    private void onSaveModelMenuItemClick() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Model (*.obj)", "*.obj"));
+        fileChooser.setTitle("Save");
+
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            if (mesh != null) {
+                ObjWriter objWriter = new ObjWriter();
+                objWriter.write(mesh, String.valueOf(file));
+            } else {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Предупреждение");
+                alert.setHeaderText(null);
+                alert.setContentText("Нет модели для сохранения.");
+                alert.showAndWait();
+            }
+        } else {
+            System.out.println("Сохранение отменено.");
         }
     }
 
