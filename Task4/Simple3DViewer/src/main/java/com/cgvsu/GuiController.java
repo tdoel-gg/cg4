@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.IOException;
 import java.io.File;
+import java.util.*;
 import javax.vecmath.Vector3f;
 
 import com.cgvsu.model.Model;
@@ -39,6 +40,7 @@ public class GuiController {
             1.0F, 1, 0.01F, 100);
 
     private Timeline timeline;
+    private List<Model> models = new ArrayList<>();
 
     @FXML
     private void initialize() {
@@ -55,8 +57,10 @@ public class GuiController {
             canvas.getGraphicsContext2D().clearRect(0, 0, width, height);
             camera.setAspectRatio((float) (width / height));
 
-            if (mesh != null) {
-                RenderEngine.render(canvas.getGraphicsContext2D(), camera, mesh, (int) width, (int) height);
+            if (models != null) {
+                for (int i = 0; i < models.size(); i++) {
+                RenderEngine.render(canvas.getGraphicsContext2D(), camera, models.get(i), (int) width, (int) height);
+                }
             }
         });
 
@@ -68,7 +72,7 @@ public class GuiController {
     private void onOpenModelMenuItemClick() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Model (*.obj)", "*.obj"));
-        fileChooser.setTitle("Load Model");
+        fileChooser.setTitle("Open");
 
         File file = fileChooser.showOpenDialog((Stage) canvas.getScene().getWindow());
         if (file == null) {
@@ -80,11 +84,13 @@ public class GuiController {
         try {
             String fileContent = Files.readString(fileName);
             mesh = ObjReader.read(fileContent);
+            models.add(mesh);
             // todo: обработка ошибок
         } catch (IOException exception) {
 
         }
     }
+
 
     @FXML
     public void handleCameraForward(ActionEvent actionEvent) {
